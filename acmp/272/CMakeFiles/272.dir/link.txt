@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/272.dir/main.cpp.o  -o 272 -rdynamic 
