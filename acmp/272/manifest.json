@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.username.272",
+    "description": "description of 272",
+    "framework": "ubuntu-sdk-14.04-qml-dev1",
+    "architecture": "all",
+    "title": "272",
+    "hooks": {
+        "272": {
+            "apparmor": "272.json",
+            "desktop": "272.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": ""
+}
