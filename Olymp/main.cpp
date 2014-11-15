@@ -9,17 +9,20 @@ using namespace std;
 int main()
 {
 	freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-	register int x;
-	register long sum = 0;
-	while(1)
+	register int v = 9 * 3600;
+	int x;
+	cin >> x;
+	v += x * 45 * 60;
+	for(int i = 1; i < x; i++)
 	{
-		cin >> x;
-		if(!x)
+		if(i % 2 == 0)
 		{
-			cout << sum << endl;
-			exit(EXIT_SUCCESS);
+			v += 15 * 60;
+		} else
+		{
+			v += 300;
 		}
-		sum += x;
 	}
+	cout << v / 3600 << " " << v % 3600 / 60 << endl;
 	return 0;
 }
