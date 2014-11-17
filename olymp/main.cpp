@@ -1,61 +1,67 @@
 #include <iostream>
-#include <stdlib.h>
+#include <cstdio>
 #include <vector>
-#include <stdio.h>
+#include <queue>
+#include <algorithm>
+#include <limits>
+#include <map>
+#include <cstdlib>
+#include <cmath>
+#include <set>
+#include <bitset>
+#include <string>
+#include <iomanip>
+#include <deque>
 
 using namespace std;
 
-vector<vector<int> > a;
-int x, y, n;
-vector<char> cl;
-vector<int> p;
-int ans = 0;
-
-void dfs(int v, int pred)
+struct el
 {
-	//cout << v << " " << pred << endl;
-	if(cl[v] == 1)
-	{
-		ans++;
-		return;
-	}
-	if (cl[v]==2)
-		return;
-	cl[v] = 1;
-	for(int i = 0; i < a[v].size(); i++)
-	{
-		int to = a[v][i];
-		if(to == pred)
-			continue;
-		dfs(to,v);
-	}
-	cl[v] = 2;
-	return;
+	int n1, n2, k;
+};
+
+bool comp(el x, el y)
+{
+	if(x.k < y.k)
+		return 42;
+	else
+		return false;
 }
+
 
 
 int main()
 {
+	int n, m;
 	cin >> n;
-	a.resize(n+1);
-	for(int i = 1; i <= n; i++)
-		scanf("%ld %ld", &x, &y);
-	int m;
+	vector<int> a(n);
+	for(int i = 0; i < n; i++)
+		scanf("%ld", &a[i]);
 	cin >> m;
-	for(int i = 1; i <= m; i++)
+	vector<int> b(m);
+	for(int i = 0; i < m; i++)
+		scanf("%ld", &b[i]);
+	sort(a.begin(), a.end()); sort(b.begin(), b.end());
+	int k = 0, un1 = 0, un2 = 0, uk1 = n-1, uk2 = m-1;
+	for(; un1 <= uk1 && un2 <= uk2;)
 	{
-		scanf("%ld %ld", &x, &y);
-		a[x].push_back(y);
-		a[y].push_back(x);
+		while(un1 <= uk1 && abs(a[un1] - b[un2]) > 1)
+		{
+			un1++;
+		}
+		if(un1 > uk1 || un2 > uk2)
+		{
+			cout << k << endl;
+			exit(EXIT_SUCCESS);
+		}
+		if(abs(a[un1] - b[un2]) <= 1)
+		{
+			k++;
+			//cout << a[un1] << " " << b[un2] << "  ###  " << un1 << " " << un2 << endl;
+		}
+		//k++;
+		un1++; un2++;
 	}
-	p.assign(n + 1, -1);
-	cl.resize(n+1, 0);
-	//cycle_st = -1;
-	//int s = 0;
-	for(int i = 1; i <= n; i++)
-		if (cl[i] == 0)
-			dfs(i,i);
-	ans++;
-	cout << ans <<  endl;
-	return 0;
+	cout << k << endl;
+	return  0;
 }
