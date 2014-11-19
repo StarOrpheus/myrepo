@@ -10,7 +10,7 @@ vector<int> heap;
 
 void siftUp(int i)
 {
-	while(i > 1 && heap[i] < heap[i / 2])
+	while(i > 1 && heap[i] > heap[i / 2])
 	{
 		register int t = heap[i];
 		heap[i] = heap[i / 2];
@@ -24,9 +24,9 @@ void siftDown(int i)
 	while(2 * i <= heap_sz)
 	{
 		int j = i;
-		if(heap[2 * i] < heap[j])
+		if(heap[2 * i] > heap[j])
 			j = 2 * i;
-		if(2 * i + 1 <= heap_sz && heap[2 * i + 1] < heap[j])
+		if(2 * i + 1 <= heap_sz && heap[2 * i + 1] > heap[j])
 			j = 2 * i + 1;
 		if(i == j)
 			break;
@@ -53,7 +53,7 @@ void extract(void)
 		return;
 	} else
 	{
-		cout << heap[1] << " ";
+		cout << heap[1] << endl;
 		heap[1] = heap[heap_sz];
 		heap_sz--;
 		siftDown(1);
@@ -72,27 +72,33 @@ void init(void)
 	heap.resize(200100);
 }
 
-void init(int x)
-{
-	heap_sz = 0;
-	heap.resize(x+1);
-}
-
 int main()
 {
-	//freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-	register int k = 0;
-	register int t;
-	cin >> k;
-	init(k+1);
-	for(int i = 1; i <= k; i++)
+	freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+	string t_s;
+	register int t_i;
+	init();
+	while(1)
 	{
-		cin >> t;
-		add(t);
-	}
-	for(int i = 1; i <= k; i++)
-	{
-		extract();
+		cin >> t_s;
+		if(t_s == "ADD")
+		{
+			cin >> t_i;
+			add(t_i);
+			//cout << "1" << endl;
+			t_s = "";
+		} else if(t_s == "EXTRACT")
+		{
+			extract();
+			//cout << "2" << endl;
+			t_s = "";
+		} else if(t_s == "CLEAR")
+		{
+			//cout << "3" << endl;
+			clear();
+			t_s = "";
+		} else
+			break;
 	}
 	return 0;
 }
