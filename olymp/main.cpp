@@ -1,67 +1,68 @@
-#include <iostream>
 #include <cstdio>
-#include <vector>
-#include <queue>
-#include <algorithm>
-#include <limits>
-#include <map>
 #include <cstdlib>
+#include <iostream>
 #include <cmath>
-#include <set>
-#include <bitset>
 #include <string>
-#include <iomanip>
-#include <deque>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-struct el
+#define INF ((1<<30)-1)
+
+struct __attribute__((packed)) vf
 {
-	int n1, n2, k;
+	int v, weight;
 };
 
-bool comp(el x, el y)
+vf inline __attribute__((always_inline)) makev(int v, int weight)
 {
-	if(x.k < y.k)
-		return 42;
-	else
-		return false;
+	vf temp;
+	temp.v = v;
+	temp.weight = weight;
+	return temp;
 }
-
-
 
 int main()
 {
-	int n, m;
-	cin >> n;
-	vector<int> a(n);
-	for(int i = 0; i < n; i++)
-		scanf("%ld", &a[i]);
-	cin >> m;
-	vector<int> b(m);
-	for(int i = 0; i < m; i++)
-		scanf("%ld", &b[i]);
-	sort(a.begin(), a.end()); sort(b.begin(), b.end());
-	int k = 0, un1 = 0, un2 = 0, uk1 = n-1, uk2 = m-1;
-	for(; un1 <= uk1 && un2 <= uk2;)
+	int n, m, s;
+	cin >> n >> m >> s;
+	vector<vf> g(m+1, makev(0, -1));
+	register int x, y;
+	for(int i = 1; i <= n; i++)
 	{
-		while(un1 <= uk1 && abs(a[un1] - b[un2]) > 1)
+		scanf("%ld %ld", &x, &y);
+		if(g[y].v == 0)
 		{
-			un1++;
+			g[y].v = x;
+			g[y].weight = i;
 		}
-		if(un1 > uk1 || un2 > uk2)
+	}
+	vector<int> f(m+1, INF);
+	f[s] = 0;
+	vector<int> q(n+1, 0);
+	int un = 0, uk = 1;
+	q[un] = s;
+	while(un <= uk)
+	{
+		int k = q[un];
+		un++;
+		if(g[k].v == 0)
 		{
-			cout << k << endl;
+			cout << f[k] << endl;
 			exit(EXIT_SUCCESS);
 		}
-		if(abs(a[un1] - b[un2]) <= 1)
-		{
-			k++;
-			//cout << a[un1] << " " << b[un2] << "  ###  " << un1 << " " << un2 << endl;
+		if(f[g[k].v] != INF) {
+			cout << -1 << endl;
+			exit(EXIT_SUCCESS);
 		}
-		//k++;
-		un1++; un2++;
+		q[uk] = g[k].v;
+		uk++;
+		f[g[k].v] = f[k] + 1;
 	}
-	cout << k << endl;
-	return  0;
+
+
+
+
+	return 0;
 }
