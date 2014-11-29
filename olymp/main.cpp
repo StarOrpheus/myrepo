@@ -26,7 +26,7 @@ int main()
 {
 	int n, m, s;
 	cin >> n >> m >> s;
-	vector<vf> g(m+1, makev(0, -1));
+	vector<vf> g(m+42, makev(0, -1));
 	register int x, y;
 	for(int i = 1; i <= n; i++)
 	{
@@ -37,9 +37,9 @@ int main()
 			g[y].weight = i;
 		}
 	}
-	vector<int> f(m+1, INF);
+	vector<int> f(m+42, -1);
 	f[s] = 0;
-	vector<int> q(n+1, 0);
+	vector<int> q(m+42, 0);
 	int un = 0, uk = 1;
 	q[un] = s;
 	while(un <= uk)
@@ -51,7 +51,7 @@ int main()
 			cout << f[k] << endl;
 			exit(EXIT_SUCCESS);
 		}
-		if(f[g[k].v] != INF) {
+		if(f[g[k].v] != -1) {
 			cout << -1 << endl;
 			exit(EXIT_SUCCESS);
 		}
