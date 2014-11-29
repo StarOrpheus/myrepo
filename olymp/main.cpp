@@ -7,7 +7,6 @@
 #include <algorithm>
 
 using namespace std;
-
 #define INF ((1<<30)-1)
 
 struct __attribute__((packed)) vf
@@ -60,9 +59,5 @@ int main()
 		uk++;
 		f[g[k].v] = f[k] + 1;
 	}
-
-
-
-
 	return 0;
 }
