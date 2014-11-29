@@ -27,10 +27,10 @@ int main()
 	int n, m, s;
 	cin >> n >> m >> s;
 	vector<vf> g(m+42, makev(0, -1));
-	register int x, y;
+	int x, y;
 	for(int i = 1; i <= n; i++)
 	{
-		scanf("%ld %ld", &x, &y);
+		cin >> x >> y;
 		if(g[y].v == 0)
 		{
 			g[y].v = x;
