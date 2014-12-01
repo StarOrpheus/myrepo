@@ -7,57 +7,40 @@
 #include <algorithm>
 
 using namespace std;
-#define INF ((1<<30)-1)
 
-struct __attribute__((packed)) vf
-{
-	int v, weight;
-};
-
-vf inline __attribute__((always_inline)) makev(int v, int weight)
-{
-	vf temp;
-	temp.v = v;
-	temp.weight = weight;
-	return temp;
-}
-
-int main()
-{
-	int n, m, s;
-	cin >> n >> m >> s;
-	vector<vf> g(m+42, makev(0, -1));
-	int x, y;
+int main(){
+	int n, l;
+	cin >> n >> l;
+	vector<int> a(n+1);
 	for(int i = 1; i <= n; i++)
+		//scanf("%ld", &a[i]);
+		cin >> a[i];
+	sort(a.begin()+1, a.end());
+	//a[0] = 0;
+	int max_l = -1;
+	for(int i = 2; i <= n; i++)
 	{
-		cin >> x >> y;
-		if(g[y].v == 0)
+		if(a[i]-a[i-1] > max_l)
 		{
-			g[y].v = x;
-			g[y].weight = i;
+			max_l = a[i] - a[i-1];
+			//cout << a[i] << " " << a[i-1] << endl;
 		}
 	}
-	vector<int> f(m+42, -1);
-	f[s] = 0;
-	vector<int> q(m+42, 0);
-	int un = 0, uk = 1;
-	q[un] = s;
-	while(un <= uk)
+	if(n == 1)
 	{
-		int k = q[un];
-		un++;
-		if(g[k].v == 0)
-		{
-			cout << f[k] << endl;
-			exit(EXIT_SUCCESS);
-		}
-		if(f[g[k].v] != -1) {
-			cout << -1 << endl;
-			exit(EXIT_SUCCESS);
-		}
-		q[uk] = g[k].v;
-		uk++;
-		f[g[k].v] = f[k] + 1;
+		printf("%.9f\n" , (double) max(a[1], l - a[1]));
+		exit(EXIT_SUCCESS);
 	}
+	if(a[1] > max_l / 2.0 || l - a[n] > max_l / 2.0)
+	{
+		if(a[1] > l - a[n])
+			printf("%.9f \n", (double) a[1]);
+		else
+			printf("%.9f \n", (double) l-a[n]);
+		exit(EXIT_SUCCESS);
+	}
+
+	//cout << a[3] << " " << a[5] << endl;
+	printf("%.9f\n", max_l / 2.0000);
 	return 0;
 }
