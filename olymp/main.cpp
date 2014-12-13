@@ -32,8 +32,13 @@ int main(){
 	}
 	if(t > b)
 		k++;
-	if(b == 0)
+	if(b == 0 && a != 1)
 		k++;
+	if(t == 2)
+	{
+		cout << 2 << endl;
+		exit(EXIT_SUCCESS);
+	}
 	if(d > b && t % d == 0)
 		k++;
 	cout << k << endl;
