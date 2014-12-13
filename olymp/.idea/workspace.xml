@@ -29,8 +29,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8459302" vertical-offset="117" max-vertical-offset="765">
-              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.627907" vertical-offset="124" max-vertical-offset="799">
+              <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -361,8 +361,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8459302" vertical-offset="117" max-vertical-offset="765">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.627907" vertical-offset="124" max-vertical-offset="799">
+          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>

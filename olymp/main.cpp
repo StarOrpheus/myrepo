@@ -32,6 +32,8 @@ int main(){
 	}
 	if(t > b)
 		k++;
+	if(b == 0)
+		k++;
 	if(d > b && t % d == 0)
 		k++;
 	cout << k << endl;
