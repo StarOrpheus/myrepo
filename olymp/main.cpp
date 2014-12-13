@@ -9,16 +9,16 @@
 using namespace std;
 
 int main(){
-	int a, b;
+	long long a, b;
 	cin >> a >> b;
 	if(a == b)
 	{
 		cout << "infinity\n";
 		exit(EXIT_SUCCESS);
 	}
-	int t = a - b;
-	int k = 0;
-	int d = 2;
+	long long t = a - b;
+	long long k = 0;
+	long long d = 2;
 	while(d * d < t)
 	{
 		if(t % d == 0)
