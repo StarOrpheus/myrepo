@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-  //  freopen("maniac.in", "r", stdin); freopen("maniac.out", "w", stdout);
+ freopen("maniac.in", "r", stdin); freopen("maniac.out", "w", stdout);
     string alphabet, a, b;
     cin >> alphabet;
     int l;
@@ -55,14 +55,13 @@ int main()
         exit(EXIT_SUCCESS);
     }
     a_l = a.length(); b_l = b.length();
-    for(df = 1;df <20000 ;df++)
-    {
-        for(int i = 0; i < a_l; i++)
+    for(df = 1;df <20000 ;df++) {
+        for (int i = 0; i < a_l; i++) {
             a[i] = alphabet[(a[i] - 'a')];
-        if(a == b)
-        {
-            cout << df << endl;
-            exit(EXIT_SUCCESS);
+            if (a == b) {
+                cout << df << endl;
+                exit(EXIT_SUCCESS);
+            }
         }
     }
     cout << -1 << endl;
