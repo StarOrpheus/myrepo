@@ -3,67 +3,69 @@
 #include <vector>
 #include <cstdlib>
 #include <cstdio>
+#include <stack>
+#include <algorithm>
 #include <cstring>
 
 #define MIN(a, b) ((a < b) ? (a) : (b))
 #define MAX(a, b) ((a > b) ? (a) : (b))
+
 using namespace std;
+
+struct interv{
+    int open;
+    int close;
+    interv(){}
+    interv(int x, int y)
+    {
+        open = x;
+        open = y;
+    }
+};
+struct st_el{
+    int el;
+    char type;
+};
+
+bool inline comp(st_el a, st_el b)
+{
+    if(a.el < b.el)
+        return true;
+    if(a.el > b.el)
+        return false;
+    if(!a.type && b.type)
+        return true;
+    return false;
+}
 
 int main()
 {
- freopen("maniac.in", "r", stdin); freopen("maniac.out", "w", stdout);
-    string alphabet, a, b;
-    cin >> alphabet;
-    int l;
-    cin >> l;
-    cin >> a;
-    cin >> b;
-    if (a == b) {
-        cout << 0;
-        exit(EXIT_SUCCESS);
-    }
-    int a_l = a.length(), b_l = b.length();
-    vector<int> k(28, 0);
-    for(int i = 0; i < a_l; i++)
-        k[a[i]-'a'] = 1;
-
-    a = ""; char c;
-    for(int i = 0; i < 26; i++)
-        if(k[i])
-        {
-            c = i + 'a';
-            a += c;
-        }
-    k.resize(28, 0);
-    for(int i = 0; i < 28; i++)
-        k[i] = 0;
-    for(int i = 0; i < b_l; i++)
-        k[b[i] - 'a'] = 1;
-    b = "";
-    for(int i = 0; i < 26; i++)
-        if(k[i])
-        {
-            c = i + 'a';
-            b += c;
-        }
-    //cout << a << " " << b << endl;
-    int df;
-    string temp;
-    if(a.length() != b.length())
+    int n;
+    cin >> n;
+    vector<interv> a(n);
+    int t;
+    for(int i = 0; i < n; i++)
     {
-        cout << -1 << endl;
-        exit(EXIT_SUCCESS);
+        cin >> a[i].open >> t;
+        a[i].close = a[i].open + t;
     }
-    a_l = a.length(); b_l = b.length();
-    for(df = 1;df <20000 ;df++) {
-        for (int i = 0; i < a_l; i++) {
-            a[i] = alphabet[(a[i] - 'a')];
-            if (a == b) {
-                cout << df << endl;
-                exit(EXIT_SUCCESS);
-            }
-        }
+    vector<st_el> st(2 * n);
+    for(int i = 0; i < n; i++)
+    {
+        st[i].el        = a[i].open;
+        st[i].type      = 0b1;
+        st[n + i].el    = a[i].close;
+        st[n+i].type    = 0b0;
     }
-    cout << -1 << endl;
+    sort(st.begin(), st.end(), comp);
+    //for(int i = 0; i < 2 * n; i++)
+        //cout << (int) st[i].el << " # " << (int) st[i].type << endl;
+    int k_open = 0, k_m = 0;
+    for(int i = 0; i < 2 * n; i++)
+    {
+        k_open += (st[i].type) ? 1 : -1;
+        k_m = MAX(k_open, k_m);
+    }
+    cout << k_m << endl;
     return 0;
 }
