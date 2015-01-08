@@ -1,52 +1,36 @@
-#include <iostream>
 #include <cstdio>
-#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
 using namespace std;
 
-bool comp(int* a, int* b)
+int inline f(int i)
 {
-	if(*a > *b)
-	{
-		return 42;
-	}
-	return 0;
+    int z = 1;
+    while(z < i){
+        z <<= 1;
+    }
+    z /= 4;
+    return z;
+
 }
 
-void qsort(int l, int r, int **a);
 
-int main()
-{
-	int a[1000], *b[1000], n;
-	cin >> n;
-	for(int i = 1; i <= n; i++)
-	{
-		scanf("%ld", &a[i]);
-		b[i] = &a[i];
-	}
-	qsort(1, n, b);
-	for(int i = 1; i <= n; i++)
-		printf("%ld ", *b[i]);
-	putchar('\n');
-	return 0;
-}
-
-void qsort(int l, int r, int** a)
-{
-	int i = l, j = r, *x = a[(l + r) / 2];
-	while(i < j)
-	{
-		while(*a[i] < *x)
-			i++;
-		while(*a[j] > *x)
-			j--;
-		if(i <= j)
-		{
-			swap(a[i], a[j]);
-			i++; j--;
-		}
-	}
-	if(i < r)
-		qsort(i, r, a);
-	if(j > l)
-		qsort(j, l, a);
+int main(){
+    int n;
+    cin >> n;
+    vector<int> a(2*n + 3);
+    a[1] = 1;
+    for(int i = 2; i <= 2*n; i++)
+    {
+        if(i % 2 == 0)
+            a[i] = a[i / 2];
+        else
+            a[i] = a[i-1] + f(i);
+    }
+    for(int i = n+1; i <= 2 * n; i++)
+        cout << a[i] << " ";
+    cout << endl;
+    return 0;
 }
