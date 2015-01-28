@@ -18,11 +18,16 @@ using namespace std;
 #define F n
 #define INF (1 << 30)
 
-struct __attribute__((packed)) edge
+struct /*__attribute__((packed))*/ edge
 {
     int y, z, p, f;
     edge(){}
-    edge(int y, int z, int f, int p) : y(y), z(z), f(f), p(p) {}
+    edge(int _y, int _z, int _f, int _p) {
+        y = _y;
+        z = _z;
+        f = _f;
+        p = _p;
+    }
 };
 
 //vector<bool> d;
@@ -86,7 +91,7 @@ long dfs(int v, int dp)
 
 int main() {
     //freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
+    freopen("output.txt", "w", stdout);
     cin >> n >> m;
 //    d.resize(n+1, -1);
     int x,y,z;
@@ -95,10 +100,10 @@ int main() {
     {
         //scanf("%ld %ld %ld", &x, &y, &z);
         cin >> x >> y >> z;
-        cout << i << endl;
-        g[x].push_back(edge(y, z, 0, g[y].size()  ));
-        g[y].push_back(edge(x, 0, 0, g[x].size()-1));
-        cout << i << endl;
+//        cout << i << endl;
+        g[x].push_back(edge(y, z, 0, (int) g[y].size()  ));
+        g[y].push_back(edge(x, 0, 0, (int) g[x].size()-1));
+//        cout << i << endl;
     }
     int f;
     int pot = 0;
