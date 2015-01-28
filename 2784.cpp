@@ -78,8 +78,8 @@ long dfs(int v, int dp)
 int main() {
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
-    d.resize(n+1);
     cin >> n >> m;
+    d.resize(n+1);
     int x,y,z;
     g.resize(n+1);
     for(int i = 0; i < m; i++)
