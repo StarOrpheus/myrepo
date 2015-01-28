@@ -93,12 +93,16 @@ int main() {
     g.resize(n+1);
     for(int i = 0; i < m; i++)
     {
-        scanf("%ld %ld %ld", &x, &y, &z);
-        g[x].push_back(edge(y, z, 0, g[y].size()));
+        //scanf("%ld %ld %ld", &x, &y, &z);
+        cin >> x >> y >> z;
+        cout << i << endl;
+        g[x].push_back(edge(y, z, 0, g[y].size()  ));
         g[y].push_back(edge(x, 0, 0, g[x].size()-1));
+        cout << i << endl;
     }
     int f;
     int pot = 0;
+    printf("tits\n");
     while(bfs())
     {
 //        for(int i = 1; i <= n; i++)
