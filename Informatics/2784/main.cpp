@@ -20,18 +20,14 @@ using namespace std;
 
 struct /*__attribute__((packed))*/ edge
 {
-    int y, z, p, f;
+    long long y, z, p, f;
     edge(){}
-    edge(int _y, int _z, int _f, int _p) {
-        y = _y;
-        z = _z;
-        f = _f;
-        p = _p;
-    }
+    edge(int y, int z, int f, int p) : y(y), z(z), f(f), p(p) {}
 };
 
-//vector<bool> d;
-bool d[100000];
+vector<int> d;
+vector<int> kon;
+//bool d[100000];
 int n, m;
 vector<vector<edge > > g;
 
@@ -43,6 +39,7 @@ inline bool bfs()
 //    for(int i = 1; i <= n; i++)
 //        printf("%ld ", d[i]);
 //    putchar('\n');
+    //cout << "One more tit\n" << endl;
     queue<int> q;
     q.push(1);
     while(!q.empty() && d[n] == -1)
@@ -73,11 +70,11 @@ long dfs(int v, int dp)
         return dp;
     if(!dp)
         return 0;
-    for(int i = 0; i < g[v].size(); i++)
+    for(int i = kon[v]; i < g[v].size(); i++, kon[v]++)
     {
         if(d[v] + 1 == d[g[v][i].y])
         {
-            pushed = dfs(g[v][i].y, min(dp, g[v][i].z - g[v][i].f));
+            pushed = dfs(g[v][i].y, min((long long) dp, g[v][i].z - g[v][i].f));
             if(pushed)
             {
                 g[v][i].f += pushed;
@@ -91,9 +88,10 @@ long dfs(int v, int dp)
 
 int main() {
     //freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    //freopen("output.txt", "w", stdout);
     cin >> n >> m;
-//    d.resize(n+1, -1);
+    kon.resize(n+1);
+    d.resize(n+1, -1);
     int x,y,z;
     g.resize(n+1);
     for(int i = 0; i < m; i++)
@@ -106,15 +104,14 @@ int main() {
 //        cout << i << endl;
     }
     int f;
-    int pot = 0;
-    printf("tits\n");
+    long long pot = 0;
+    //printf("tits\n");
+    //cout << "More tits " << endl;
     while(bfs())
     {
-//        for(int i = 1; i <= n; i++)
-//            printf("%ld ", d[i]);
+        kon.assign(n+1, 0);
         while(int pu = dfs(1, INF))
             pot += pu;
-//        break;
     }
     cout << pot << endl;
     return 0;
