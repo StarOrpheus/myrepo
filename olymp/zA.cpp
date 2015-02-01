@@ -1,50 +1,36 @@
 #include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cstdlib>
+#include <cstring>
 #include <string>
 #include <vector>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-
-#define MIN(a, b) ((a < b) ? (a) : (b))
-#define MAX(a, b) ((a > b) ? (a) : (b))
+#include <map>
+#include <set>
+#include <iomanip>
+#include <queue>
+#include <locale>
+#include <deque>
 
 using namespace std;
 
-int main()
-{
+#define S 1
+#define F n
+#define INF (1 << 30)
+
+int main() {
+    freopen("happy.in", "r", stdin);
+    freopen("happy.out", "w", stdout);
     int n;
     cin >> n;
-    vector<vector<int> > a(n+1, vector<int>(n+1) );
-    vector<vector<char> > f(n+1, vector<char>(n+1, 0));
-    for(int i = 1; i <= n; i++)
-        for(int j = 1; j <= n; j++)
-            cin >> a[i][j];
-    for(int i = 1; i <= n; i++)
-        for(int j = 1; j <= n; j++)
-        {
-            if(a[i][j] == 1)
-            {
-                f[i][j] = f[i][j-1] + 1;
-                continue;
-            }
-            f[i][j] = 0;
-        }
-    long long ans = 0;
-    for(int i = 1; i <= n; i++)
-        for(int j = 1; j <= n; j++)
-        {
-            if(!f[i][j])
-                continue;
-            //bool f = true;
-            int x = i, y = j;
-            for(int k = 1; x >= 1; k++, x--)
-            {
-                if(f[x][y] >= k)
-                    ans++;
-                else
-                    break;
-            }
-        }
-    cout << ans << endl;
+    vector<int> a(n);
+    for(int i = 0; i < n; i++) scanf("%ld", &a[i]);
+    int f1 = 0, f2 = 0;
+    for(int i = 0; i < n; i++)
+        (a[i] % 2) ? f1++ : f2++;
+    if(f2 > f1)
+        printf("Happy\n");
+    else
+        printf("Sad\n");
     return 0;
 }
