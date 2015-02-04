@@ -18,19 +18,8 @@ using namespace std;
 
 #define SQR(x)                  ((x)*(x))
 #define RANGE(x1, y1, x2, y2)   (sqrt(SQR(x1-x2) + SQR(y1-y2)))
-#define bestz                   z_b[b_iz]
-#define bestv                   v_b[b_iv]
-#define curz                    z_b[it]
-#define curv                    v_b[i]
-#define best_range              (bestz.rast + RANGE(bestz.x, bestz.y, bestv.x, bestv.y) + bestv.rast)
-#define current_range           (curz.rast + RANGE(curz.x, curz.y, curv.x, curv.y) + curv.rast)
 #define fci                     (l + ((r - l) / 3))
 #define sci                     (r - ((r - l) / 3))
-#define fc                      z_b[fci]
-#define sc                      z_b[sci]
-#define from                    v_b[i]
-#define range_1                 (from.rast + RANGE(from.x, from.y, fc.x, fc.y) + fc.rast)
-#define range_2                 (from.rast + RANGE(from.x, from.y, sc.x, sc.y) + sc.rast)
 struct point
 {
     int     ind;
@@ -49,8 +38,10 @@ int main()
     cin >> n >> m;
     int a, b;
     cin >> a >> b;
-    vector<point> z_b(n);
-    vector<point> v_b(m);
+//    vector<point> z_b(n);
+//    vector<point> v_b(m);
+    point *z_b = (point *) malloc(sizeof(point) * n);
+    point *v_b = (point *) malloc(sizeof(point) * m);
     for(int i = 0; i < n; i++)
     {
         int y;
@@ -64,40 +55,43 @@ int main()
     {
         int y;
         cin >> y;
-        z_b[i].ind      = i+1;
-        z_b[i].x        = b;
-        z_b[i].y        = y;
+        v_b[i].ind      = i+1;
+        v_b[i].x        = b;
+        v_b[i].y        = y;
     }
     for(int i = 0; i < m; i++)
     {
         int r;
         cin >> r;
-        z_b[i].rast     = r;
+        v_b[i].rast     = r;
     }
     int b_iz = 0, b_iv = 0;
     for(int i = 0; i < m; i++)
     {
-        int l = 0, r = m-1;
-        while(r - l >= 3)
+        int l = 0, r = n-1;
+        while(r - l > 3)
         {
-            if(range_1 - range_2 > 0.0000001)
+            int ms1 = l + (r - l) / 3, ms2 = r - (r - l) / 3;
+            if(z_b[ms1].rast + v_b[i].rast + RANGE(z_b[ms1].x, z_b[ms1].y, v_b[i].x, v_b[i].y) >/*!!!!*/ z_b[ms2].rast + v_b[i].rast + RANGE(z_b[ms2].x, z_b[ms2].y, v_b[i].x, v_b[i].y))
             {
-                l = fci + 1;
+                l = ms1;
             } else
             {
-                r = sci - 1;
+                r = ms2;
             }
+//            cout << l << " "  << r << endl;
         }
-        for(int it = max(0, l-1); it <= min(r+1, m-1); it++)
+        for(int it = max(0, l-1); it <= min(r+1, n-1); it++)
         {
-            if(best_range - current_range > 0.00000001)
+            if(z_b[b_iz].rast + RANGE(z_b[b_iz].x, z_b[b_iz].y, v_b[b_iv].x, v_b[b_iv].y) + v_b[b_iv].rast > z_b[it].rast + RANGE(z_b[it].x, z_b[it].y, v_b[i].x, v_b[i].y) + v_b[i].rast)
             {
-                b_iz = i;
-                b_iv = it;
+                b_iz = it;
+                b_iv = i;
             }
         }
     }
-//    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    free(z_b);
+    free(v_b);
     cout << (b_iz+1) << " " << (b_iv+1) << endl;
     return 0;
 }
