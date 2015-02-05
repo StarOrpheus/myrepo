@@ -86,6 +86,15 @@ public:
         }
         return;
     }
+    void print_jobannyj_tree(void)
+    {
+        for(int j = 1; j < z + n; j++)
+        {
+            printf("%ld ", a[j]);
+        }
+        putchar('\n');
+        return;
+    }
 };
 vector<tree> les;
 int main()
@@ -113,6 +122,10 @@ int main()
             if(g[i].size() >= 2)
                 root = i;
         }
+    }
+    if(n == 2)
+    {
+        root = 1;
     }
     ways.resize(g[root].size(), vector<int>(1, root));
     for(int i = 0; i < g[root].size(); i++)
@@ -163,9 +176,7 @@ int main()
             cin >> x >> y; // чтобы ребра с x+1 по y чекал
             if(x > y)
             {
-                int t = x;
-                x = y;
-                y = t;
+                swap(x, y);
             }
             if(x == root && y == root)
             {
@@ -208,5 +219,6 @@ int main()
             }
         }
     }
+
     return 0;
 }
