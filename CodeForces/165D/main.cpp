@@ -78,10 +78,11 @@ public:
     }
     void change(int l, int color)
     {
-        a[l] = color; l *= 2;
+        a[l] = color; l /= 2;
         while(l >= 1)
         {
             a[l] = a[2*l] + a[2*l + 1];
+            l /= 2;
         }
         return;
     }
@@ -143,13 +144,16 @@ int main()
         {
             int id;
             cin >> id;
+            id--;
             int num_r = MAX(d[a[id].s], d[a[id].f]);
             les[nomer_vetki[a[id].s]].change(num_r + les[nomer_vetki[a[id].s]].z - 1, BLACK);
         } else if(type == 2)
         {
             int id;
             cin >> id;
+            id--;
             int num_r = MAX(d[a[id].s], d[a[id].f]);
+//            cout << num_r << endl;
             les[nomer_vetki[a[id].s]].change(num_r + les[nomer_vetki[a[id].s]].z - 1, WHITE);
         } else
         {
