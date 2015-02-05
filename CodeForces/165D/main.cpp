@@ -130,11 +130,13 @@ int main()
         }
     }
     int m;
+
     les.resize(ways.size());
     for(int i = 0; i < ways.size(); i++)
     {
         les[i] = tree(ways[i]);
     }
+//    cout << "Root is vertex number " << root << endl;
     cin >> m;
     for(int i = 0; i < m; i++)
     {
@@ -164,6 +166,22 @@ int main()
                 int t = x;
                 x = y;
                 y = t;
+            }
+            if(x == root && y == root)
+            {
+                if(x == root)
+                {
+                    swap(x, y);
+                }
+                bool flag = !les[nomer_vetki[x]].fsum(les[nomer_vetki[x]].z, les[nomer_vetki[x]].z + x - 1, les[nomer_vetki[x]].z, les[nomer_vetki[x]].z + n - 1, 1);
+                if(flag)
+                {
+                    cout << d[x] << endl;
+                } else
+                {
+                    cout << -1 << endl;
+                }
+                continue;
             }
             if(nomer_vetki[x] == nomer_vetki[y])
             {
