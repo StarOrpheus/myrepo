@@ -45,7 +45,7 @@ int main(){
     cin >> k;
     cin >> n;
     int c;
-    int a[101];
+    long long a[101];
     long long ans = 0;
     memset((int *) a, '\0', sizeof(int) * 101);
     for(int i = 0; i < n; i++)
@@ -88,7 +88,7 @@ int main(){
                     continue;
                 } else if(a[ia] >= 4 && !us[hsh(ia, ib, ic, id)])
                 {
-                    ans += (a[ia]*(a[ia] - 1) * (a[ia] - 2) * (a[ia] - 3)) / fac(4);
+                    ans += a[ia]*(a[ia] - 1) * (a[ia] - 2) * (a[ia] - 3) / fac(4);
                     us[hsh(ia, ib, ic, id)] = 42;
 //                    printf("%ld\n", ia);
                     continue;
