@@ -16,57 +16,63 @@ using namespace std;
 #define MIN(a, b) ((a < b) ? (a) : (b))
 #define MAX(a, b) ((a > b) ? (a) : (b))
 
-int HOLY_COW = 0;
-
-int inline fsum(int l, int r, int lv, int rv, int v, vector<int> &tree){
-//    printf("%ld %ld %ld %ld %ld\n", l, r, lv, rv, v);
-    if(lv > r || rv < l)
-        return 0;
-    if(lv >= l && rv <= r)
-    {
-//        HOLY_COW++;
-//        cout << " Lel \n";
-        return tree[v];
-    }
-    return fsum(l, r, lv, (lv + rv) / 2, 2*v, tree) + fsum(l, r, ((lv + rv) / 2) + 1, rv, 2*v + 1, tree);
+int fac(int c)
+{
+    if(c == 1)
+        return 1;
+    if(c == 0)
+        return 1;
+    return fac(c-1)*c;
 }
-
-#define L 2
-#define R 4
 
 int main(){
 //    freopen("lel.out", "w", stdout);
+    int k;
     int n;
+    cin >> k;
     cin >> n;
-    int z = 1;
-    while(z < n)
-        z <<= 1;
-    vector<int> tree(2*z+1, 0);
-    for(int i = z; i <= z + n - 1; i++)
-        tree[i] = i - z + 1;
-    for(int i = z-1; i; i--)
-        tree[i] = tree[2*i] + tree[2*i + 1];
-//    cout << fsum(L + z - 1, R + z - 1, z, z + z - 1, 1, tree) << endl;
-//    cout << HOLY_COW << endl;
-    for(int i = 1; i <= n; i++)
+    int c;
+    int a[101];
+    long long ans = 0;
+    memset((int *) a, '\0', sizeof(int) * 101);
+    for(int i = 0; i < n; i++)
     {
-        int k;
-        cin >> k;
-        int n_z = tree[z + k - 1];
-        if(n_z + k <= n)
+//        scanf("%ld", &c);
+        cin >> c;
+        if(c <= 100)
         {
-            int s = fsum(k + z, k + z + n_z - 1, z, (z << 1) - 1, 1, tree);
-            tree[k + z - 1] = s / n_z;
-            int v = (k + z - 1) / 2;
-            while(v >= 1)
-            {
-                tree[v] = tree[2 * v] + tree[2 * v + 1];
-                v = v / 2;
-            }
-            continue;
+            a[c]++;
         }
-        
     }
-
+    for(int ia = 0; ia <= 100; ia++)
+    {
+        for(int ib = ia; ib <= 100; ib++)
+        {
+            for(int ic = ib; ic <= 100; ic++)
+            {
+                if(ia + ib + ic >= k)
+                    break;
+                int id = k - ia - ib - ic;
+                if(ia != ib != ic != id)
+                {
+                    ans += a[ia]*a[ib]*a[ic]*a[id];
+                    continue;
+                } else if(ia == ib && ia != ic && ia != id)
+                {
+                    ans += a[ia] * (a[ia] - 1) / 2 * a[ic] * a[id];
+                    continue;
+                } else if(ia == ib == ic && ic != id)
+                {
+                    ans += (a[ia]*(a[ia] - 1)*(a[ia] - 2)) / fac(3) * a[id];
+                    continue;
+                } else
+                {
+                    ans += (a[ia]*(a[ia] - 1) * (a[ia] - 2) * (a[ia] - 3)) / fac(4);
+                    continue;
+                }
+            }
+        }
+    }
+    cout << ans << endl;
     return 0;
 }
