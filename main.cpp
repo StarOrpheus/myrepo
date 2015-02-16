@@ -16,100 +16,83 @@ using namespace std;
 #define MIN(a, b) ((a < b) ? (a) : (b))
 #define MAX(a, b) ((a > b) ? (a) : (b))
 
-long long inline hsh(long long a, long long b, long long c, long long d)
-{
-    long long l[4];
-    l[0] = a;
-    l[1] = b;
-    l[2] = c;
-    l[3] = d;
-    sort(l, l + 3);
-    long long ans = 0;
-    for(int i = 0; i < 4; i++)
-        ans += (1 << i) * l[i];
-    return ans;
-}
 
-long long fac(long long c)
+long long fack(long long c)
 {
     if(c == 1)
         return 1;
     if(c == 0)
         return 1;
-    return fac(c-1)*c;
+    return fack(c - 1)*c;
 }
 
 int main(){
 //    freopen("lel.out", "w", stdout);
-    bool us[1510];
-    memset((void *) us, '\0', sizeof(bool) * 1510);
-    int k;
-    int n;
-    cin >> k;
-    cin >> n;
-    int c;
-    long long a[101];
-    long long ans = 0;
-    for(int i = 0; i < 101; i++) a[i] = 0;
-    for(int i = 0; i < n; i++)
+    long long k, n, ans = 0;
+    cin >> k >> n;
+    int f[110][5];
+    for(int i = 0; i <= 100; i++)
+        f[i][0] = 1;
+    for(int i = 0; i <= 100; i++)
     {
-//        scanf("%ld", &c);
+        for(int j = 1; j <= 4; j++)
+            f[i][j] = f[i-1][j] + f[i-1][j-1];
+    }
+//    cout << f[5][4] << endl;
+    long long a[101];
+    memset((void *) a, '\0', sizeof(long long) * 101);
+    for(int i = 1; i <= n; i++)
+    {
+        int c;
         cin >> c;
         if(c <= 100)
-        {
             a[c]++;
-        }
     }
-
-    for(int ia = 0; ia <= 100; ia++)
+    if(!(k % 4))
     {
-        for(int ib = 0; ib <= 100; ib++)
+        int t = a[k / 4];
+        ans += t * (t-1) * (t-2) * (t-3) / fack(4);
+    }
+    for(int i = 0; i < 100; i++)
+    {
+        for(int j = i + 1; j <= 100; j++)
         {
-            for(int ic = 0; ic <= 100; ic++)
+            for(int inum = 1; inum <= 3; inum++)
             {
-                if(ia + ib + ic >= k)
-                    break;
-                int id = k - ia - ib - ic;
-                if(ia + ib + ic + id != k)
-                    continue;
-                int l[4];
-                l[0] = ia;
-                l[1] = ib;
-                l[2] = ic;
-                l[3] = id;
-                sort(l, l + 3);
-                if(a[l[0]] >= 1 && a[l[1]] >= 1 && a[l[2]] >= 1 && a[l[3]] >= 1 && l[0] != l[1] && l[0] != l[2] && l[0] != l[3]
-                        && l[1] != l[2] && l[1] != l[3] && l[2] != l[3] && !us[hsh(l[0], l[1], l[2], l[3])])
+                int jnum = 4 - inum;
+                if(i*inum + j*jnum == k)
                 {
-                    ans += a[l[0]]*a[l[1]]*a[l[2]]*a[l[3]];
-                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
-//                    printf("%ld %ld %ld %ld #1\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
-//                    continue;
-                }
-                if(l[0] == l[1] && l[0] != l[2] && l[0] != l[3] && a[l[0]] >= 2 && !us[hsh(l[0], l[1], l[2], l[3])] && a[l[2]] >= 1 && a[l[3]] >= 1)
-                {
-                    ans += a[l[0]] * (a[l[0]] - 1) / 2 * a[l[2]] * a[l[3]];
-                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
-//                    printf("%ld %ld %ld %ld #2\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
-//                    continue;
-                }
-                if(l[0] == l[1] && l[1] == l[2] && l[2] != l[3] && a[l[0]] >= 3 && !us[hsh(l[0], l[1], l[2], l[3])] && a[l[3]] >= 1)
-                {
-                    ans += (a[l[0]]*(a[l[0]] - 1)*(a[l[0]] - 2)) / fac(3) * a[l[3]];
-                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
-//                    printf("%ld %ld %ld %ld #3\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
-//                    continue;
-                }
-                if(l[0] == l[1] && l[1] == l[2] && l[2] == l[3] && a[l[0]] >= 4 && !us[hsh(l[0], l[1], l[2], l[3])])
-                {
-                    ans += a[l[0]]*(a[l[0]] - 1) * (a[l[0]] - 2) * (a[l[0]] - 3) / fac(4);
-                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
-//                    printf("%ld %ld %ld %ld #4\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
-//                    continue;
+                    ans += f[a[i]][inum] * f[a[j]][jnum];
                 }
             }
         }
     }
+    for(int i = 0; i <= 100; i++)
+    {
+        for(int j = i+1; j <= 100; j++)
+        {
+            for(int h = j+1; h <= 100; h++)
+            {
+                for(int inum = 1; inum <= 2; inum++)
+                {
+                    int jnum = 3 - inum;
+                    if(i*inum + j*jnum + h == k)
+                    {
+                        ans += f[a[i]][inum] * f[a[j]][jnum] * h;
+                    }
+                }
+            }
+        }
+    }
+    for(int i = 0; i < 100; i++)
+        for(int j = i+1; j <= 100; j++)
+            for(int h = j+1; j <= 100; j++)
+            {
+                int x = k - i - j - h;
+                if(x > h)
+                    ans += a[i]*a[j]*a[h]*a[x];
+            }
     cout << ans << endl;
+//    cout << f(5, 4) << endl;
     return 0;
 }
