@@ -68,36 +68,43 @@ int main(){
             for(int ic = 0; ic <= 100; ic++)
             {
                 if(ia + ib + ic >= k)
-                    continue;
+                    break;
                 int id = k - ia - ib - ic;
                 if(ia + ib + ic + id != k)
                     continue;
-                if(a[ia] >= 1 && a[ib] >= 1 && a[ic] >= 1 && a[id] >= 1 && ia != ib && ia != ic && ia != id && ib != ic && ib != id && ic != id && !us[hsh(ia, ib, ic, id)])
+                int l[4];
+                l[0] = ia;
+                l[1] = ib;
+                l[2] = ic;
+                l[3] = id;
+                sort(l, l + 3);
+                if(a[l[0]] >= 1 && a[l[1]] >= 1 && a[l[2]] >= 1 && a[l[3]] >= 1 && l[0] != l[1] && l[0] != l[2] && l[0] != l[3]
+                        && l[1] != l[2] && l[1] != l[3] && l[2] != l[3] && !us[hsh(l[0], l[1], l[2], l[3])])
                 {
-                    ans += a[ia]*a[ib]*a[ic]*a[id];
-                    us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld %ld #1\n", a[ia], a[ib], a[ic], a[id]);
+                    ans += a[l[0]]*a[l[1]]*a[l[2]]*a[l[3]];
+                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
+//                    printf("%ld %ld %ld %ld #1\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
 //                    continue;
                 }
-                if(ia == ib && ia != ic && ia != id && a[ia] >= 2 && !us[hsh(ia, ib, ic, id)] && a[ic] >= 1 && a[id] >= 1)
+                if(l[0] == l[1] && l[0] != l[2] && l[0] != l[3] && a[l[0]] >= 2 && !us[hsh(l[0], l[1], l[2], l[3])] && a[l[2]] >= 1 && a[l[3]] >= 1)
                 {
-                    ans += a[ia] * (a[ia] - 1) / 2 * a[ic] * a[id];
-                    us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld %ld #2\n", a[ia], a[ib], a[ic], a[id]);
+                    ans += a[l[0]] * (a[l[0]] - 1) / 2 * a[l[2]] * a[l[3]];
+                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
+//                    printf("%ld %ld %ld %ld #2\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
 //                    continue;
                 }
-                if(ia == ib && ib == ic && ic != id && a[ia] >= 3 && !us[hsh(ia, ib, ic, id)] && a[id] >= 1)
+                if(l[0] == l[1] && l[1] == l[2] && l[2] != l[3] && a[l[0]] >= 3 && !us[hsh(l[0], l[1], l[2], l[3])] && a[l[3]] >= 1)
                 {
-                    ans += (a[ia]*(a[ia] - 1)*(a[ia] - 2)) / fac(3) * a[id];
-                    us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld %ld #3\n", a[ia], a[ib], a[ic], a[id]);
+                    ans += (a[l[0]]*(a[l[0]] - 1)*(a[l[0]] - 2)) / fac(3) * a[l[3]];
+                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
+//                    printf("%ld %ld %ld %ld #3\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
 //                    continue;
                 }
-                if(ia == ib && ib == ic && ic == id && a[ia] >= 4 && !us[hsh(ia, ib, ic, id)])
+                if(l[0] == l[1] && l[1] == l[2] && l[2] == l[3] && a[l[0]] >= 4 && !us[hsh(l[0], l[1], l[2], l[3])])
                 {
-                    ans += a[ia]*(a[ia] - 1) * (a[ia] - 2) * (a[ia] - 3) / fac(4);
-                    us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld %ld #4\n", a[ia], a[ib], a[ic], a[id]);
+                    ans += a[l[0]]*(a[l[0]] - 1) * (a[l[0]] - 2) * (a[l[0]] - 3) / fac(4);
+                    us[hsh(l[0], l[1], l[2], l[3])] = 42;
+//                    printf("%ld %ld %ld %ld #4\n", a[l[0]], a[l[1]], a[l[2]], a[l[3]]);
 //                    continue;
                 }
             }
