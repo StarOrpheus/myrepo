@@ -18,6 +18,12 @@ using namespace std;
 
 int inline hsh(int a, int b, int c, int d)
 {
+    int l[4];
+    l[0] = a;
+    l[1] = b;
+    l[2] = c;
+    l[3] = d;
+    sort(l, l + 3);
     return a + 2*b + 4 * c + 8 * d;
 }
 
@@ -53,9 +59,9 @@ int main(){
     }
     for(int ia = 0; ia <= 100; ia++)
     {
-        for(int ib = ia; ib <= 100; ib++)
+        for(int ib = 0; ib <= 100; ib++)
         {
-            for(int ic = ib; ic <= 100; ic++)
+            for(int ic = 0; ic <= 100; ic++)
             {
                 if(ia + ib + ic >= k)
                     break;
