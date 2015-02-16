@@ -47,7 +47,7 @@ int main(){
     int c;
     long long a[101];
     long long ans = 0;
-    memset((int *) a, '\0', sizeof(int) * 101);
+    for(int i = 0; i < 101; i++) a[i] = 0;
     for(int i = 0; i < n; i++)
     {
 //        scanf("%ld", &c);
@@ -57,6 +57,7 @@ int main(){
             a[c]++;
         }
     }
+
     for(int ia = 0; ia <= 100; ia++)
     {
         for(int ib = 0; ib <= 100; ib++)
@@ -64,34 +65,37 @@ int main(){
             for(int ic = 0; ic <= 100; ic++)
             {
                 if(ia + ib + ic >= k)
-                    break;
+                    continue;
                 int id = k - ia - ib - ic;
                 if(ia + ib + ic + id != k)
-                    break;
-                if(ia != ib && ia != ic && ia != id && ib != ic && ib != id && ic != id && !us[hsh(ia, ib, ic, id)])
+                    continue;
+                if(a[ia] >= 1 && a[ib] >= 1 && a[ic] >= 1 && a[id] >= 1 && ia != ib && ia != ic && ia != id && ib != ic && ib != id && ic != id && !us[hsh(ia, ib, ic, id)])
                 {
                     ans += a[ia]*a[ib]*a[ic]*a[id];
                     us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld %ld\n", ia, ib, ic, id);
-                    continue;
-                } else if(ia == ib && ia != ic && ia != id && a[ia] >= 2 && !us[hsh(ia, ib, ic, id)])
+//                    printf("%ld %ld %ld %ld #1\n", a[ia], a[ib], a[ic], a[id]);
+//                    continue;
+                }
+                if(ia == ib && ia != ic && ia != id && a[ia] >= 2 && !us[hsh(ia, ib, ic, id)] && a[ic] >= 1 && a[id] >= 1)
                 {
                     ans += a[ia] * (a[ia] - 1) / 2 * a[ic] * a[id];
                     us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld %ld\n", ia, ic, id);
-                    continue;
-                } else if(ia == ib && ib == ic && ic != id && a[ia] >= 3 && !us[hsh(ia, ib, ic, id)])
+//                    printf("%ld %ld %ld %ld #2\n", a[ia], a[ib], a[ic], a[id]);
+//                    continue;
+                }
+                if(ia == ib && ib == ic && ic != id && a[ia] >= 3 && !us[hsh(ia, ib, ic, id)] && a[id] >= 1)
                 {
                     ans += (a[ia]*(a[ia] - 1)*(a[ia] - 2)) / fac(3) * a[id];
                     us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld %ld\n", ia, id);
-                    continue;
-                } else if(a[ia] >= 4 && !us[hsh(ia, ib, ic, id)])
+//                    printf("%ld %ld %ld %ld #3\n", a[ia], a[ib], a[ic], a[id]);
+//                    continue;
+                }
+                if(ia == ib && ib == ic && ic == id && a[ia] >= 4 && !us[hsh(ia, ib, ic, id)])
                 {
                     ans += a[ia]*(a[ia] - 1) * (a[ia] - 2) * (a[ia] - 3) / fac(4);
                     us[hsh(ia, ib, ic, id)] = 42;
-//                    printf("%ld\n", ia);
-                    continue;
+//                    printf("%ld %ld %ld %ld #4\n", a[ia], a[ib], a[ic], a[id]);
+//                    continue;
                 }
             }
         }
