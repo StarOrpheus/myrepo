@@ -46,9 +46,9 @@ int main(){
     }
     for(int ia = 0; ia <= 100; ia++)
     {
-        for(int ib = ia; ib <= 100; ib++)
+        for(int ib = 0; ib <= 100; ib++)
         {
-            for(int ic = ib; ic <= 100; ic++)
+            for(int ic = 0; ic <= 100; ic++)
             {
                 if(ia + ib + ic >= k)
                     break;
@@ -79,6 +79,6 @@ int main(){
             }
         }
     }
-    cout << ans << endl;
+    cout << (ans / 5) << endl;
     return 0;
 }
