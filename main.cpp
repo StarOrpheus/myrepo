@@ -16,18 +16,21 @@ using namespace std;
 #define MIN(a, b) ((a < b) ? (a) : (b))
 #define MAX(a, b) ((a > b) ? (a) : (b))
 
-int inline hsh(int a, int b, int c, int d)
+long long inline hsh(long long a, long long b, long long c, long long d)
 {
-    int l[4];
+    long long l[4];
     l[0] = a;
     l[1] = b;
     l[2] = c;
     l[3] = d;
     sort(l, l + 3);
-    return a + 2*b + 4 * c + 8 * d;
+    long long ans = 0;
+    for(int i = 0; i < 4; i++)
+        ans += (1 << i) * l[i];
+    return ans;
 }
 
-int fac(int c)
+long long fac(long long c)
 {
     if(c == 1)
         return 1;
