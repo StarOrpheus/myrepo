@@ -7,92 +7,96 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <limits>
-#include <cmath>
 #include <iomanip>
 #include <queue>
+#include <locale>
+#include <deque>
+
 using namespace std;
 
-#define MIN(a, b) ((a < b) ? (a) : (b))
-#define MAX(a, b) ((a > b) ? (a) : (b))
+#define S 1
+#define F n
+#define INF (1 << 30)
 
-
-long long fack(long long c)
+struct /*__attribute__((packed))*/ edge
 {
-    if(c == 1)
-        return 1;
-    if(c == 0)
-        return 1;
-    return fack(c - 1)*c;
+    long long y, z, p, f;
+    edge(){}
+    edge(int y, int z, int f, int p) : y(y), z(z), f(f), p(p) {}
+};
+
+vector<int> d;
+vector<int> kon;
+int n, m;
+vector<vector<edge > > g;
+
+inline bool bfs()
+{
+    for(int i = 1; i <= n; i++)
+        d[i] = -1;
+    d[1] = 0;
+    queue<int> q;
+    q.push(1);
+    while(!q.empty() && d[n] == -1)
+    {
+        int v = q.front(); q.pop();
+        for(int i = 0; i < g[v].size(); i++)
+        {
+            if(d[g[v][i].y] == -1 && g[v][i].f < g[v][i].z)
+            {
+                d[g[v][i].y] = d[v] + 1;
+                q.push(g[v][i].y);
+            }
+        }
+    }
+    return (d[n] != -1);
 }
 
-int main(){
-//    freopen("lel.out", "w", stdout);
-    long long k, n, ans = 0;
-    cin >> k >> n;
-    int f[110][5];
-    for(int i = 0; i <= 100; i++)
-        f[i][0] = 1;
-    for(int i = 0; i <= 100; i++)
+long dfs(int v, int dp)
+{
+    int pushed;
+    if(v == n)
+        return dp;
+    if(!dp)
+        return 0;
+    for(int i = kon[v]; i < g[v].size(); i++, kon[v]++)
     {
-        for(int j = 1; j <= 4; j++)
-            f[i][j] = f[i-1][j] + f[i-1][j-1];
-    }
-//    cout << f[5][4] << endl;
-    long long a[101];
-    memset((void *) a, '\0', sizeof(long long) * 101);
-    for(int i = 1; i <= n; i++)
-    {
-        int c;
-        cin >> c;
-        if(c <= 100)
-            a[c]++;
-    }
-    if(!(k % 4))
-    {
-        int t = a[k / 4];
-        ans += t * (t-1) * (t-2) * (t-3) / fack(4);
-    }
-    for(int i = 0; i < 100; i++)
-    {
-        for(int j = i + 1; j <= 100; j++)
+        if(d[v] + 1 == d[g[v][i].y])
         {
-            for(int inum = 1; inum <= 3; inum++)
+            pushed = dfs(g[v][i].y, min((long long) dp, g[v][i].z - g[v][i].f));
+            if(pushed)
             {
-                int jnum = 4 - inum;
-                if(i*inum + j*jnum == k)
-                {
-                    ans += f[a[i]][inum] * f[a[j]][jnum];
-                }
+                g[v][i].f += pushed;
+                g[g[v][i].y][g[v][i].p].f -= pushed;
+                return pushed;
             }
         }
     }
-    for(int i = 0; i <= 100; i++)
+    return 0;
+}
+
+int main() {
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    cin >> n >> m;
+    kon.resize(n+1);
+    d.resize(n+1, -1);
+    int x,y,z;
+    g.resize(n+1);
+    for(int i = 0; i < m; i++)
     {
-        for(int j = i+1; j <= 100; j++)
-        {
-            for(int h = j+1; h <= 100; h++)
-            {
-                for(int inum = 1; inum <= 2; inum++)
-                {
-                    int jnum = 3 - inum;
-                    if(i*inum + j*jnum + h == k)
-                    {
-                        ans += f[a[i]][inum] * f[a[j]][jnum] * h;
-                    }
-                }
-            }
-        }
+        cin >> x >> y >> z;
+        g[x].push_back(edge(y, z, 0, (int) g[y].size()  ));
+        g[y].push_back(edge(x, 0, 0, (int) g[x].size()-1));
     }
-    for(int i = 0; i < 100; i++)
-        for(int j = i+1; j <= 100; j++)
-            for(int h = j+1; j <= 100; j++)
-            {
-                int x = k - i - j - h;
-                if(x > h)
-                    ans += a[i]*a[j]*a[h]*a[x];
-            }
-    cout << ans << endl;
-//    cout << f(5, 4) << endl;
+    int f;
+    long long pot = 0;
+    while(bfs())
+    {
+        kon.assign(n+1, 0);
+        while(int pu = dfs(1, INF))
+            pot += pu;
+    }
+    cout << pot << endl;
     return 0;
 }

@@ -27,7 +27,6 @@ struct /*__attribute__((packed))*/ edge
 
 vector<int> d;
 vector<int> kon;
-//bool d[100000];
 int n, m;
 vector<vector<edge > > g;
 
@@ -36,10 +35,6 @@ inline bool bfs()
     for(int i = 1; i <= n; i++)
         d[i] = -1;
     d[1] = 0;
-//    for(int i = 1; i <= n; i++)
-//        printf("%ld ", d[i]);
-//    putchar('\n');
-    //cout << "One more tit\n" << endl;
     queue<int> q;
     q.push(1);
     while(!q.empty() && d[n] == -1)
@@ -54,12 +49,6 @@ inline bool bfs()
             }
         }
     }
-//    for(int i = 1; i <= n; i++)
-//        printf("%ld ", d[i]);
-//    putchar('\n');
-//    putchar('\n');
-//    putchar('\n');
-    //printf("hmmm...\n");
     return (d[n] != -1);
 }
 
@@ -96,17 +85,12 @@ int main() {
     g.resize(n+1);
     for(int i = 0; i < m; i++)
     {
-        //scanf("%ld %ld %ld", &x, &y, &z);
         cin >> x >> y >> z;
-//        cout << i << endl;
         g[x].push_back(edge(y, z, 0, (int) g[y].size()  ));
         g[y].push_back(edge(x, 0, 0, (int) g[x].size()-1));
-//        cout << i << endl;
     }
     int f;
     long long pot = 0;
-    //printf("tits\n");
-    //cout << "More tits " << endl;
     while(bfs())
     {
         kon.assign(n+1, 0);
