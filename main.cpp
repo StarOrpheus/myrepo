@@ -11,155 +11,132 @@
 #include <queue>
 #include <locale>
 #include <deque>
-
 using namespace std;
-struct edge
-{
-    int     flow;   //  Flow
-    int     cap;    //  Capcity
-    int     to;     //  To
-    int     back;   //  Back
-    bool    u;
-    edge(){
-        u = false;
-    }
-    edge(int to, int cap, int f, int b) : flow(f), cap(cap), to(to), back(b) {
-        u = false;
-    }
+
+struct edge{
+    int to;
+    int cap;
+    int cost;
+    int flow;
+    int back;
+    edge(){}
+    edge(int to, int cap, int cost, int fl, int back) : to(to), cap(cap), cost(cost), flow(fl), back(back) {}
 };
-#define MIN(a, b) (a < b ? (a) : (b))
-#define INF (1<<30)
+
+#define S       210
+#define T       211
+#define START   101
+#define INF     (1<<30)
+int a[210];
 int n;
-int d[110];
-string s;
-bool used[110];
-int k[26];
-vector<vector<edge>> g;
-#define S 100            // Source
-#define T 101            // Gain
-
-bool bfs(void)
-{
-    for(int i = 0; i < 110; i++)
-        d[i] = -1;
-    d[S] = 0;
-    queue<int> q;
-    q.push(S);
-    while(!q.empty())
-    {
-        int v = q.front(); q.pop();
-        for(int i = 0; i < g[v].size(); i++)
-        {
-            int to = g[v][i].to;
-            if(d[to] == -1 && g[v][i].flow < g[v][i].cap)
-            {
-                d[to] = d[v] + 1;
-                q.push(to);
-            }
-        }
-    }
-    return (d[T] != -1);
-}
-
-long dfs(int v, int dp)
-{
-    int pushed;
-    if(v == T)
-        return dp;
-    if(!dp)
-        return 0;
-    for(int i = 0; i < g[v].size(); i++)
-    {
-        if(d[v] + 1 == d[g[v][i].to])
-        {
-            pushed = dfs(g[v][i].to, MIN(dp, g[v][i].cap - g[v][i].flow));
-            if(pushed)
-            {
-                g[v][i].flow                        += pushed;
-                g[g[v][i].to][g[v][i].back].flow    -= pushed;
-                return pushed;
-            }
-        }
-    }
-    return 0;
-}
+vector<vector<edge > > g;
+int id[500];
+int d[500];
+int p[500];
+int pnum[500];
 
 
 int main() {
-    //freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("/home/jyree/src/lel.out", "w", stdout);
     cin >> n;
-    cin >> s;
-    g.resize(110);
-    memset((void *) k, '\0', sizeof(int)*26);
-    for(int i = 0; i < n; i++)
-        k[s[i]-'a']++;
-    for(int i = 0; i < 26; i++)
+    for(int i = 0; i < 2*n; i++)
+        scanf("%ld", &a[i]);
+    for(int i = 0; i < 500; i++)
+        p[i] = -1;
+    g.resize(250);
+    for(int i = 0; i < 2*n; i++)
     {
-        if(k[i])
-        {
-            g[S].push_back(edge(i, k[i], 0, g[i].size()));
-            g[i].push_back(edge(S, 0, 0, g[S].size()-1));
-        }
+        g[S].push_back(edge(i, 1, 0, 0, g[i].size()));
+        g[i].push_back(edge(T, 0, 0, 0, g[S].size()-1));
     }
-    for(int i = 0; i < 26; i++)
+    for(int i = 0; i < 2*n; i++)
     {
-        for(int j = 0; j < 26; j++)
+        for(int j = 0; j < 2*n; j++)
         {
-            if(i != j && k[i] && k[j])
+            if(j == 0 || a[i] != a[j-1])
             {
-                g[i].push_back(edge(26+j, INF, 0, g[j+26].size()));
-                g[j+26].push_back(edge(i, 0, 0, g[i].size()-1));
+                g[i].push_back(edge(j+START, 1, /*400 - */((abs(j - i) - 1) * 10), 0, g[j+START].size()));
+                g[j+START].push_back(edge(i, 0, -1*(/*400 - */((abs(j - i) - 1) * 10)), 0, g[i].size()-1));
             }
         }
     }
-    for(int j = 0; j < 26; j++)
+    for(int i = 0; i < 2*n; i++)
     {
-        if(k[j])
-        {
-            g[j+26].push_back(edge(T, k[j], 0, g[T].size()));
-            g[T].push_back(edge(j+26, 0, 0, g[j+26].size() - 1));
-        }
+        g[i+START].push_back(edge(T, 1, 0, 0, g[T].size()));
+        g[T].push_back(edge(i+START, 0, 0, 0, g[i+START].size()));
     }
-
-    /*for(int i = 0; i < 110; i++)
+    int cost = 0, flow = 0;
+    while(true)
     {
-        if(g[i].size())
-            printf("#%ld ", i);
-        for(int j = 0; j < g[i].size(); j++)
-            printf("(%ld; %ld) ", g[i][j].to, g[i][j].back);
-        if(g[i].size())
-            putchar('\n');
-    }*/
-    int pot = 0;
-    while(bfs())
-    {
-        memset((void *) used, '\0', sizeof(bool) * 110);
-        while(int pu = dfs(S, 10000000))
+        memset((void *) id, '\0', 500);
+        for(int i = 0; i < 500; i++)
+            d[i] = INF;
+        d[S] = 0;
+        id[S] = 1;
+        deque<int> q;
+        q.push_back(S);
+        while(!q.empty())
         {
-            pot += pu;
-//            cout << pot << endl;
-        }
-    }
-    if(pot != n)
-    {
-        cout << "Impossible\n";
-        exit(EXIT_SUCCESS);
-    }
-    for(int i = 0; i < s.size(); i++)
-    {
-        for(int j = 0; j < g[s[i] - 'a'].size(); j++)
-        {
-            #define shit (g[s[i] - 'a'][j])
-            if(shit.flow > 0)
+            int v = q.front();
+            q.pop_front();
+            for(int i = 0; i < g[v].size(); i++)
             {
-//                shit.u = 42;
-                putchar(shit.to - 26 + 'a');
-                shit.flow--;
+                edge e = g[v][i];
+                if(e.cap > e.flow && d[e.to] > d[v] + e.cost)
+                {
+                    d[e.to]         = d[v] + e.cost;
+                    p[e.to]         = v;
+                    pnum[e.to]      = i;
+                    if(id[e.to] == 0)
+                    {
+                        q.push_back(e.to);
+                        id[e.to] = 1;
+                    } else if(id[e.to] == 2)
+                    {
+                        q.push_front(e.to);
+                        id[e.to] = 1;
+                    }
+                }
+            }
+            id[v] = 2;
+        }
+        if(d[T] == INF)
+            break;
+        int add = INF;
+        int v = T;
+        cout << d[T] << endl;
+        while(v != S)
+        {
+            int u = p[v];
+            int i = pnum[v];
+            add = min(add, g[u][i].cap - g[u][i].flow);
+            v = u;
+        }
+
+        flow += add;
+        v = T;
+        while(v != S)
+        {
+            int u = p[v];
+            int i = pnum[v];
+            g[u][i].flow += add;
+            g[v][g[u][i].back].flow -= add;
+            cost += g[u][i].cost*add;
+            v = u;
+        }
+    }
+    for(int i = 0; i < 2*n; i++)
+    {
+        for(int j = 0; j < g[i].size(); j++)
+        {
+            if(g[i][j].flow > 0)
+            {
+                printf("%ld ", a[g[i][j].to - START]);
+                g[i][j].flow--;
                 break;
             }
         }
     }
-    putchar('\n');
     return 0;
 }
