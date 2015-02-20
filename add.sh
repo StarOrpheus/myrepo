@@ -1,2 +1,2 @@
 #!/bin/sh
-cp /home/jyree/src/test/main.cpp /home/jyree/src/myrepo/
+cp /home/jyree/src/Test/main.cpp /home/jyree/src/myrepo/
