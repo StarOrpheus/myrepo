@@ -18,97 +18,126 @@ using namespace std;
 #define SWAP(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
 #define MAX(a, b) ((a > b) ? (a) : (b))
 
-struct query
+struct __attribute__((packed)) vertex
 {
-    int u;
-    int v;
-    int d;
-    int id;
-    query(){}
-    query(int u, int v, int d, int id) : u(u), v(v), d(d), id(id) {}
+    int     next[26];
+    int     p;
+//    int     go[26];
+    char    pch;
+    bool    leaf;
+//    int     cnt;
+//    int     up;
+    int     link;
+//    int     bc = 0;
 };
 
-int n, m, k;
-vector<vector<int > > g;
-vector<query> q;
+inline void init(int k);
+inline void add_string(const string& s);
+inline int link(int v);
+inline int go(int v, char c);
+inline int cnt(int v);
 
-inline bool comp(query a, query b)
+vertex t[1000500];
+int k = 1;
+//bool good[26];
+
+
+inline void init(int k)
 {
-    return (a.u != b.u) ? a.u < b.u : (a.v != b.v) ? a.v < b.v : a.d < b.d;
+    t[k].leaf   = false;
+    t[k].p      = -1;
+//    t[k].cnt    = -1;
+    t[k].link   = -1;
+    for(int i = 0; i < 26; i++)
+        t[k].next[i] = -1;
 }
-
-int last = -1;
-int d[5500][2];
-bool ans[1010000];
-
-void bfs(int v)
+inline void add_string(const char *s, int sz)
 {
-    memset(d, -1, sizeof(d));
-    queue<pair<int, int > > q;
-    d[v][0] = 0;
-    q.push(make_pair(v, 0));
-    while(!q.empty())
+    int v = 0;
+    for(int i = 0; i < sz; i++)
     {
-        int v   = q.front().first;
-        int odd = q.front().second;
-        q.pop();
-
-        for(int i = 0; i < g[v].size(); i++)
+        char c = (int) s[i] - 'a';
+        if(t[v].next[c] == -1)
         {
-            const int to = g[v][i];
-            if(d[to][odd^1] == -1)
-            {
-                d[to][odd^1] = d[v][odd] + 1;
-                q.push(make_pair(to, odd^1));
-            }
+            init(k);
+            t[k].p          = v;
+            t[k].pch        = c;
+//            t[k].bc         = t[v].bc + ((good[c]) ? 0 : 1);
+            t[v].next[c]    = k;
+//            if(t[k].bc <= bc)
+//                ans++;
+            k++;
         }
+        v = t[v].next[c];
     }
+    t[v].leaf = true;
+}
+inline int link(int v)
+{
+    if(t[v].link == -1)
+    {
+        if(v == 0 || t[v].p == 0)
+            t[v].link = 0;
+        else
+            t[v].link = go(link(t[v].p), t[v].pch);
+    }
+    return t[v].link;
+}
+inline int go(int v, char c)
+{
+    if(t[v].next[c] == -1)
+    {
+        if(v == 0)
+            t[v].next[c] = 0;
+        else
+            t[v].next[c] = go(link(v), c);
+    }
+    return t[v].next[c];
 }
 
-bool can(const query& q)
-{
-    if(g[q.v].size() == 0 || g[q.u].size() == 0)
-        return false;
-    if(last != q.u)
-    {
-        bfs(q.u);
-    }
-    int odd = q.d % 2;
-    last = q.u;
-    if(d[q.v][odd] == -1 || q.d < d[q.v][odd] || d[q.v][odd] % 2 != odd)
-        return false;
-    return true;
-}
 
 int main() {
 //    freopen("/home/jyree/src/input", "r", stdin);
 //    freopen("/home/jyree/src/output.txt", "w", stdout);
-//    freopen("combos.in", "r", stdin);
-//    freopen("combos.out", "w", stdout);
-    cin >> n >> m >> k;
-    g.resize(n);
-    for(int i = 0; i < m; i++)
+//    freopen("censor.in", "r", stdin);
+//    freopen("censor.out", "w", stdout);
+    freopen("censor.in", "r", stdin);
+    freopen("censor.out", "w", stdout);
+//    string s1, s2;
+    init(0);
+//    cin >> s1;
+//    cin >> s2;
+    char s1[1000500], s2[1000500];
+    gets(s1); gets(s2);
+    int s1l = strlen(s1), s2l = strlen(s2);
+    add_string(s2, s2l);
+    bool    used[1000100];
+    int     f[1000100];
+    memset((void *) used, 0, s1l * sizeof(bool));
+    int v = 0;
+    for(int i = 0; i < s1l; i++)
     {
-        int x, y;
-        scanf("%d %d", &x, &y);
-        x--; y--;
-        g[x].push_back(y);
-        g[y].push_back(x);
+        v = go(v, s1[i] - 'a');
+        f[i] = v;
+        if(t[v].leaf)
+        {
+            int k = s2l;
+            int j = i;
+            while(k)
+            {
+                if(!used[j])
+                {
+                    k--;
+                    used[j] = true;
+                }
+                j--;
+            }
+            v = f[j];
+        }
     }
-    int i = 0;
-    while(k--)
-    {
-        int x, y, z;
-        scanf("%d %d %d", &x, &y, &z);
-        x--; y--;
-        q.push_back(query(x, y, z, i++));
-    }
-    k = q.size();
-    sort(q.begin(), q.end(), comp);
-    for(int i = 0; i < k; i++)
-        ans[q[i].id] = can(q[i]);
-    for(int i = 0; i < k; i++)
-        printf("%s\n", (ans[i]) ? "TAK" : "NIE");
+    for(int i = 0; i < s1l; i++)
+        if(!used[i])
+            putchar(s1[i]);
+    putchar('\n');
     return 0;
 }
-
