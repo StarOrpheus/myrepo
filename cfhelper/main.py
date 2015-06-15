@@ -1,10 +1,6 @@
 import sys
 import os
 
-if(len(sys.argv) != 2):
-    print("Wrong input.\nTry cfhelper -h\nto know how to use it")
-    sys.exit()
-
 if(sys.argv[1] == '-h'):
     print('Using:\ncfhelper __MODULENAME__\nwhere __MODULENAME__ is the name of module you need')
     sys.exit()
@@ -15,4 +11,8 @@ if(not os.path.isfile(mpath)):
     print('Such module doesn\'t exist')
     sys.exit()
 
-os.system('python3 {}'.format(mpath))
+query = 'python3 {}'.format(mpath)
+for i in range(2, len(sys.argv)):
+    query += ' ' + sys.argv[i]
+
+os.system(query)
