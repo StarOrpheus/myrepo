@@ -5,7 +5,7 @@ import json
 nickname = sys.argv[1]
 
 if(nickname == '-h'):
-    print('Uses:\ncfhelp userinfo NICKNAME args1 args2 args3...\nWhere arguments(args) are rank, handle, city, country, firstName and etc.')
+    print('Uses:\ncfhelper userinfo NICKNAME args1 args2 args3...\nWhere arguments(args) are rank, handle, city, country, firstName and etc.')
     sys.exit()
 
 r = requests.get("http://codeforces.com/api/user.info", params={'handles':nickname})

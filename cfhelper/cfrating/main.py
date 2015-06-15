@@ -7,7 +7,7 @@ import os
 nickname = sys.argv[1]
 
 if(nickname == '-h'):
-	print('Uses:\ncfhelp cfrating NICKNAME\nwhere NICKNAME is your Cadeforces handle')
+	print('Uses:\ncfhelper cfrating NICKNAME\nwhere NICKNAME is your Cadeforces handle')
 	sys.exit()
 
 r = requests.get('http://codeforces.com/api/user.info', params={'handles':nickname})
