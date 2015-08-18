@@ -2,7 +2,9 @@ import sys, imp
 from os.path import isdir, dirname, join, exists
 from os import listdir
 
-modules_main = [join(dirname(__file__), 'modules', dir, 'main.py') for dir in listdir('modules') if isdir(join('modules', dir)) and exists(join('modules', dir, 'main.py'))]
+module_dir = join(dirname(__file__), 'modules')
+
+modules_main = [join(module_dir, dir, 'main.py') for dir in listdir(module_dir) if isdir(join(module_dir, dir)) and exists(join(module_dir, dir, 'main.py'))]
 
 modules = list()
 for mainfile in modules_main:

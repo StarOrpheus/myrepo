@@ -25,7 +25,7 @@ class Module:
 			return
 
 		rating = userinfo["result"][0]['rating']
-		
+
 		print('Current rating is: {}'.format(rating))
 
 		x = input("Wait for changes in rating?(y/n)")
@@ -35,9 +35,8 @@ class Module:
 
 		while True:
 			r = httplib.get('http://codeforces.com/api/user.info', params={'handles':nickname})
-
-			d = r.text[r.find('"rating"'):r.find('"maxRank"')-1]
-			d = int(d[d.find(':')+1:])
+			r = json.loads(r)
+			d = r["result"][0]['rating']
 
 			if rating != d:
 				print('Rank changed to {}'.format(d))
@@ -45,4 +44,3 @@ class Module:
 				break
 
 			time.sleep(5)
-
