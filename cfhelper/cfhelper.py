@@ -21,7 +21,7 @@ if len(sys.argv) == 1 or sys.argv[1] in ['-h', '--help']:
         module_name = sys.argv[2]
         for module in modules:
             if module.name == module_name:
-                print(module.help)
+                print(module.description, '\n', module.help, sep='')
     sys.exit()
 
 module_name = sys.argv[1]

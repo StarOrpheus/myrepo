@@ -4,7 +4,7 @@ import json
 class Module:
     def __init__(self):
         self.name = 'roundStanding'
-        self.description = 'show user\' standing in round'
+        self.description = 'Show user\' standing in round'
         self.help = 'Uses:\npython3 cfhelpher.py roundStanding NICKNAME ROUNDID\nwhere NICKNAME is your Cadeforces, ROUNDID is id of the round handle'
 
     def execute(self, args):

@@ -5,7 +5,7 @@ import datetime
 class Module:
     def __init__(self):
         self.name = "contestlist"
-        self.description = "show list of upcoming CodeForces rounds"
+        self.description = "Show list of upcoming CodeForces rounds"
         self.help = 'Uses: python3 cfhelpher.py contestlist'
 
     def execute(self, args):

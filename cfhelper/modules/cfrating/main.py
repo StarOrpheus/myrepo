@@ -7,7 +7,7 @@ class Module:
 
 	def __init__(self):
 		self.name = "cfrating"
-		self.description = "show user's rating"
+		self.description = "Show user's rating"
 		self.help = 'Uses:\npython3 cfhelpher.py cfrating NICKNAME\nwhere NICKNAME is your Cadeforces handle'
 
 	def execute(self, args):

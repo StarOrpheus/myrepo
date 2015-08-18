@@ -5,13 +5,17 @@ class Module:
 
     def __init__(self):
         self.name = 'taskCounter'
-        self.description = 'show how many tasks user solved'
+        self.description = 'Show how many tasks user has solved'
         self.help = 'Uses:\npython3 cfhelpher.py taskCounter Handle\n*Hint: you can add -v to increase verbosity level'
 
     def execute(self, args):
 
         vlvl = 0 #verbosity level
         if args[0] == '-v':
+            vlvl = 1
+            tasks = []
+            handle = args[1]
+        elif len(args) > 1 and args[1] == '-v':
             vlvl = 1
             tasks = []
             handle = args[1]
@@ -23,18 +27,18 @@ class Module:
         info = json.loads(r)
 
         if(info['status'] != 'OK'):
-            print('Fail :c\n{}'.format(info['comment']))
+            print('Fail: {}'.format(info['comment']))
             return
 
         info = info['result']
-        
+
         count = 0
 
         for tr in info:
             if(tr['verdict'] == 'OK'):
                 count += 1
                 if(vlvl == 1):
-                    tasks.append([tr['problem']['contestId'], tr['problem']['index']])
+                    tasks.append((tr['problem']['contestId'], tr['problem']['index']))
 
         if(vlvl == 1):
             tasks = sorted(tasks)
@@ -45,4 +49,3 @@ class Module:
             print('-'*10)
 
         print('Tasks solved: {}'.format(count))
-

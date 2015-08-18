@@ -1,4 +1,3 @@
-__author__ = 'mac'
 import urllib.request
 import re
 
@@ -13,10 +12,7 @@ def repair(brokenjson):
 def get(url, params = {}):
     if url[-1] != '?':
         url += '?'
-    for key, value in params.items():
-        url += str(key) + '=' + str(value) + '&'
-    url = url[:len(url)-1]
-    #print(url)
+    url += '&'.join([str(key)+'='+str(value) for key, value in params.items()])
     response = urllib.request.urlopen(url)
     ans = str(response.read())
     ans = repair(ans[2:len(ans)-1])
