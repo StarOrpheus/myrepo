@@ -1,7 +1,15 @@
 import httplib
 import time
 import json
+import sys
 import os
+
+try:
+	from gi.repository import Notify
+except:
+	if(sys.platform == 'linux'):
+		print('Error importing Notify library')
+		sys.exit(0)
 
 class Module:
 
@@ -41,6 +49,10 @@ class Module:
 			if rating != d:
 				print('Rank changed to {}'.format(d))
 				os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % ( 1, 300))
+				if(sys.platform == 'linux'):
+					Notify.init('CFRating Update')
+					nt = Notify.Notification.new('Rating update', 'Rating changed to {}'.format(d), 'Rating changed to {}'.format(d))
+					nt.show()
+					Notify.uninit()
 				break
-
 			time.sleep(5)
