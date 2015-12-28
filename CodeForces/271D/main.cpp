@@ -100,7 +100,7 @@ inline int cnt(int v)
 {
     if(t[v].cnt == -1)
     {
-        if(t[v].cnt == 0)
+        if(v == 0)
             t[v].cnt = 0;
         else
             t[v].cnt = ((t[v].leaf) ? 1 : 0) + cnt(link(v));
