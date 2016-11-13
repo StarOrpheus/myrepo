@@ -117,3 +117,16 @@ namespace Genetics
         GeneticEngine() {}
     };
 }
+
+/*
+    Class Genetics::chromosome must be realized.
+
+    Constructors Genetics::genome() and Genetics::chromosome() should make a random genome or chromosome
+
+    Functions need to be realized:
+
+    long long Genetics::Fitness(genome& );      // Fitness functions
+    void Genetics::mutate(Genetics::genome& )   // Mutates the genome
+    Genetics::genome Genetics::base_cross(genome&, genome&) // Cross signle genomes
+
+*/
