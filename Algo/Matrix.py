@@ -1,13 +1,13 @@
 from sys import stdin, stdout, stderr, exit
 
 class Matrix:
-    def print(m, fout = stderr):
+    def print(m, fout=stderr):
         for i in m:
             for j in i:
                 fout.write(str(j) + ' ')
             fout.write('\n')
 
-    def createMatrix(n, m, defval = 0):
+    def createMatrix(n, m, defval=0):
         return [[defval for i in range(m)] for j in range(n)]
 
     def createOneMatrix(n):
@@ -41,29 +41,30 @@ class Matrix:
         if(len(args) == 0):
             res = Matrix.createOneMatrix(len(a))
             while(p > 0):
-                if((p & 1) == 1):
+                if(p % 2 == 1):
                     res = Matrix.mult(res, a)
                 a = Matrix.mult(a, a)
-                p >>= 1
+                p /= 2
             return res
         elif(len(args) == 1):
             res = Matrix.createOneMatrix(len(a))
             while(p > 0):
-                if((p & 1) == 1):
+                if(p % 2 == 1):
                     res = Matrix.mult(res, a, args[0])
                 a = Matrix.mult(a, a, args[0])
-                p >>= 1
+                p /= 2
             return res
+
 
 def Fibonacci(*args):
     "To find n-th Fibonacci number. Use Fibonacci(n[, modulo])"
-    assert (len(args) > 0 and len(args) < 3), 'wrong params conut, use (number[, mod])'
+    assert (len(args) > 0 and len(args) < 3), 'wrong params count, use (number[, mod])'
 
     if(len(args) == 1):
         m1 = [[1, 1], [1, 0]]
         n = args[0]
-        return Matrix.mult(Matrix.binpow(m1, n-1), [[1], [1]])[0][0]
+        return Matrix.mult(Matrix.binpow(m1, n - 1), [[1], [1]])[0][0]
     mod = args[1]
     m1 = [[1, 1], [1, 0]]
     n = args[0]
-    return Matrix.mult(Matrix.binpow(m1, n-1, mod), [[1], [1]], mod)[0][0]
+    return Matrix.mult(Matrix.binpow(m1, n - 1, mod), [[1], [1]], mod)[0][0]
