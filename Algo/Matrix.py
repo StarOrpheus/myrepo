@@ -37,7 +37,7 @@ class Matrix:
         return res
 
     def binpow(a, p: int, *args):
-        assert len(a) == len(a[0]), 'meme'
+        assert len(a) == len(a[0]), 'Matrix must like N x N'
         if(len(args) == 0):
             res = Matrix.createOneMatrix(len(a))
             while(p > 0):
