@@ -23,12 +23,12 @@ class Matrix:
             res = Matrix.createMatrix(len(a), len(b[0]))
 
             for i in range(len(a)):
-                for j in range(len(b[0])):
-                    for z in range(len(a[0])):
-                        res[i][j] = (res[i][j] + a[i][z] * b[z][j])
+                for j in range(len(b)):
+                    for z in range(len(b[0])):
+                        res[i][z] = (res[i][z] + a[i][j] * b[j][z])
         elif(len(args) == 1):
             res = Matrix.createMatrix(len(a), len(b[0]))
-
+            
             for i in range(len(a)):
                 for j in range(len(b[0])):
                     for z in range(len(a[0])):
@@ -37,14 +37,14 @@ class Matrix:
         return res
 
     def binpow(a, p: int, *args):
-        assert len(a) == len(a[0]), 'Matrix must like N x N'
+        assert len(a) == len(a[0]), 'meme'
         if(len(args) == 0):
             res = Matrix.createOneMatrix(len(a))
             while(p > 0):
                 if(p % 2 == 1):
                     res = Matrix.mult(res, a)
                 a = Matrix.mult(a, a)
-                p /= 2
+                p //= 2
             return res
         elif(len(args) == 1):
             res = Matrix.createOneMatrix(len(a))
@@ -52,7 +52,7 @@ class Matrix:
                 if(p % 2 == 1):
                     res = Matrix.mult(res, a, args[0])
                 a = Matrix.mult(a, a, args[0])
-                p /= 2
+                p //= 2
             return res
 
 
